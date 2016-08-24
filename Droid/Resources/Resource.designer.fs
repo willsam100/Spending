@@ -21,10 +21,10 @@ namespace Spending.Droid
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException5749cc3e4b214fd4957b357f363dc616 of obj
-    exception ReturnNoneException5749cc3e4b214fd4957b357f363dc616
+    exception ReturnException0c36e90848924d9eb06b0dc7fc51b460 of obj
+    exception ReturnNoneException0c36e90848924d9eb06b0dc7fc51b460
     [<AutoOpen>]
-    module FuncConvertFinalOverload5749cc3e4b214fd4957b357f363dc616 =
+    module FuncConvertFinalOverload0c36e90848924d9eb06b0dc7fc51b460 =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
@@ -2315,7 +2315,18 @@ namespace Spending.Droid
             
             // aapt resource value: 0x7f0b0027
             static member disableHome = 2131427367
-
+            
+            // aapt resource value: 0x7f0b005c
+            static member edit_query = 2131427420
+            
+            // aapt resource value: 0x7f0b0017
+            static member end = 2131427351
+            
+            // aapt resource value: 0x7f0b0097
+            static member end_padder = 2131427479
+            
+            // aapt resource value: 0x7f0b000b
+            static member enterAlways = 2131427339
             
             // aapt resource value: 0x7f0b000c
             static member enterAlwaysCollapsed = 2131427340
@@ -2337,6 +2348,12 @@ namespace Spending.Droid
             
             // aapt resource value: 0x7f0b0018
             static member fill_vertical = 2131427352
+            
+            // aapt resource value: 0x7f0b0023
+            static member fixed = 2131427363
+            
+            // aapt resource value: 0x7f0b0005
+            static member home = 2131427333
             
             // aapt resource value: 0x7f0b0028
             static member homeAsUp = 2131427368
