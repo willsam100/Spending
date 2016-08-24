@@ -5,6 +5,7 @@ open UIKit
 open Foundation
 open Xamarin.Forms
 open Xamarin.Forms.Platform.iOS
+open SQLite.Net.Platform.XamarinIOS
 
 [<Register ("AppDelegate")>]
 type AppDelegate () =
@@ -13,8 +14,9 @@ type AppDelegate () =
     override this.FinishedLaunching (app, options) =
         Forms.Init()
 
+        let sqlPlatform = new SQLitePlatformIOS();
         let logger x = ("" |> ignore)
-        this.LoadApplication (new Spending.App("", logger))
+        this.LoadApplication (new Spending.App("", logger, sqlPlatform, ""))
         base.FinishedLaunching(app, options)
 
 module Main =

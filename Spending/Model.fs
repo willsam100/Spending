@@ -9,7 +9,7 @@ module BankStatements =
    
     type Classfier = AccountTransaction -> bool
 
-    let processFile fileData =  
+    let parseTranasctionData filename = 
         let readTransactionRows headerRow =
             let transactionHeaders = [|"Type";"Details";"Particulars";"Code";"Reference";"Amount";"Date";"ForeignCurrencyAmount";"ConversionCharge"|]
             let creditCardHeaders = [|"Card";"Type";"Amount";"Details";"TransactionDate";"ProcessedDate";"ForeignCurrencyAmount";"ConversionCharge"|]
@@ -46,7 +46,14 @@ module BankStatements =
                 | Some headers when headers = transactionHeaders -> toTranscation
                 | Some headers when headers = creditCardHeaders -> toCreditCard
                 | _ -> (fun x -> List.Empty)
-     
+
+        let dataLines = CsvFile.Parse(filename)
+        readTransactionRows dataLines.Headers
+        |> (fun f -> f(dataLines.Rows))
+
+
+    let processFile map fileData =  
+
         let categories = 
             let isPositive (t: AccountTransaction) = t.Amount > 0.0<cents>
             let isIncome (t: AccountTransaction) =
@@ -90,26 +97,21 @@ module BankStatements =
                 ("Positive", isPositive)
               ]
     
-        let categorize map (dataLines: CsvFile) = 
+        let addMoney x = (fst x)/Financial.centsToDollars
 
-            let addMoney x = (fst x)/Financial.centsToDollars
-
-            let updateCategory s (d: float<cents>*AccountTransaction) (map: Map<string,SimpleClassified>) = 
-                if map.ContainsKey s then 
-                    let entry = map.[s] 
-                    let map' = map.Remove s
-                    map.Add (s, {Total = entry.Total + (addMoney d); TransactionList = (snd d) :: entry.TransactionList})
-                else
-                    map.Add (s, {Total = addMoney d; TransactionList = List.singleton (snd d)})   
-        
-            let rec toCategory items m (t: AccountTransaction) =
-                match items with
-                    | []                            -> updateCategory "Other" (t.Amount, t) m
-                    | x::xs when (snd x)(t) = true  -> updateCategory (fst x) (t.Amount, t) m
-                    | x::xs                         -> toCategory xs m t
-                    
-            readTransactionRows dataLines.Headers
-            |> (fun f -> f(dataLines.Rows))
-            |> Seq.fold (toCategory categories) map
-
-        categorize Map.empty (CsvFile.Parse(fileData))
+        let updateCategory s (d: float<cents>*AccountTransaction) (map: Map<string,SimpleClassified>) = 
+            if map.ContainsKey s then 
+                let entry = map.[s] 
+                let map' = map.Remove s
+                map.Add (s, {Total = entry.Total + (addMoney d); TransactionList = (snd d) :: entry.TransactionList})
+            else
+                map.Add (s, {Total = addMoney d; TransactionList = List.singleton (snd d)})   
+    
+        let rec toCategory items m (t: AccountTransaction) =
+            match items with
+                | []                            -> updateCategory "Other" (t.Amount, t) m
+                | x::xs when (snd x)(t) = true  -> updateCategory (fst x) (t.Amount, t) m
+                | x::xs                         -> toCategory xs m t
+                
+        fileData
+        |> List.fold (toCategory categories) map

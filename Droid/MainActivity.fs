@@ -16,13 +16,12 @@ type MainActivity() =
     override this.OnCreate (bundle: Bundle) =
         base.OnCreate (bundle)
 
-
         let path = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
         let csvFile = File.ReadAllText (Path.Combine(path, "simple.csv"))
-
+        let databasePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.Personal), "database.db");
         let logger (x: string) = Console.WriteLine(x)
 
         Xamarin.Forms.Forms.Init (this, bundle)
 
-        this.LoadApplication (new Spending.App (csvFile, logger))
+        this.LoadApplication (new Spending.App (csvFile, logger, databasePath))
 

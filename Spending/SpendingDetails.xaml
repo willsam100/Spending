@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-x:Class="Spending.Spending"
+x:Class="Spending.SpendingDetails"
 BackgroundColor="#eee">
 
 	<ContentPage.Padding>
@@ -11,7 +11,7 @@ BackgroundColor="#eee">
 	</ContentPage.Padding>
 	
     <ContentPage.Content>
-        <ListView x:Name="listView" RowHeight="35" >
+        <ListView x:Name="listView" RowHeight="30">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -20,10 +20,10 @@ BackgroundColor="#eee">
                                 <Label 
 									Text="{Binding Category}"
 									TextColor="#503026"
-									Font="20" />
+									Font="16" />
                                 <Label 
 									Text="{Binding Amount}"
-									Font="20"
+									Font="16"
 	                                HorizontalOptions="EndAndExpand"
 	                                TextColor="#503026" />
                             </StackLayout>
